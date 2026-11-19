@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GrokBot V5 — Historical Paper Lab</title>
+<style>
+:root{--bg:#08101b;--panel:#121e2d;--panel2:#0d1724;--line:#2a3b52;--muted:#9aabc0;--txt:#edf4ff;--green:#45d6a2;--red:#ff788c;--blue:#819eff;--gold:#f1cb78}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#203550 0,#08101b 58%);color:var(--txt);font:14px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}.wrap{max-width:1240px;margin:auto;padding:20px}.top,.row,.head,.actions{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#8066ff,#16c8b5);display:grid;place-items:center;font-weight:900;font-size:22px}.brand h1{margin:0;font-size:20px}.sub,.muted{color:var(--muted)}.sub{font-size:11px}.pill,.tag{border:1px solid #315b50;background:#10251f;color:#8af0c7;border-radius:99px;padding:6px 10px;font-size:10px;font-weight:800;letter-spacing:.07em}.tag{border-color:#34445b;background:#1a2637;color:#c2d0e5;border-radius:7px}.notice{margin:16px 0;background:#241e12;border:1px solid #5c4825;color:#f1d79d;border-radius:12px;padding:12px 14px;font-size:12px}.card{background:linear-gradient(155deg,#172638,#101a28);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.layout{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-top:12px}.label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}.value{font-size:27px;font-weight:850;letter-spacing:-.04em;margin:6px 0 2px}.positive{color:var(--green)}.negative{color:var(--red)}.btn{border:1px solid #3a506d;background:#20324a;color:#eef4ff;border-radius:9px;padding:10px 14px;font-weight:750;cursor:pointer}.btn.primary{background:#526bdc;border-color:#7187f5}.btn:disabled{opacity:.5;cursor:wait}.btn:hover{filter:brightness(1.1)}input,select{background:#0b1522;color:var(--txt);border:1px solid #34465e;border-radius:8px;padding:10px;min-width:0}input{width:100%}label{font-size:11px;color:#c5d2e3}.field{display:grid;gap:5px;min-width:0}.formgrid{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}.formgrid.three{grid-template-columns:1fr 150px auto}.status{font-size:11px;color:var(--muted);display:flex;gap:8px;align-items:center}.dot{width:8px;height:8px;background:var(--green);border-radius:50%}.dot.off{background:var(--red)}.head{margin-bottom:12px}.head h2{font-size:15px;margin:0}.small{font-size:11px}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th{text-align:left;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em;padding:9px 7px;border-bottom:1px solid var(--line)}td{font-size:12px;padding:10px 7px;border-bottom:1px solid #243247}.strategygrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.strategy{background:#0c1623;border:1px solid var(--line);border-radius:12px;padding:12px}.strategy b{font-size:13px}.strategy p{font-size:11px;color:var(--muted);margin:4px 0}.strategy input{width:auto}.empty{padding:20px;text-align:center;color:var(--muted)}.chart{width:100%;height:210px;display:block}.foot{text-align:center;color:var(--muted);font-size:10px;padding:22px}.bar{height:7px;border-radius:8px;background:#25364c;overflow:hidden}.bar>i{display:block;height:100%;background:var(--blue)}.actions{justify-content:flex-start;flex-wrap:wrap}.poollist{display:grid;gap:7px;margin-top:10px}.pool{display:flex;justify-content:space-between;gap:12px;align-items:center;background:#0b1623;border:1px solid #2a3b52;border-radius:9px;padding:10px}.pool button{white-space:nowrap}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#22334a;border:1px solid #506785;padding:10px 14px;border-radius:10px;display:none;z-index:9;max-width:90vw}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}.wrap{padding:12px}}@media(max-width:520px){.top{align-items:flex-start;flex-direction:column}.formgrid,.formgrid.three{grid-template-columns:1fr}.grid{gap:8px}.strategygrid{grid-template-columns:1fr}}
+</style></head>
+<body><main class="wrap">
+<header class="top"><div class="brand"><div class="logo">G</div><div><h1>GrokBot <span class="muted">/ Historical Paper Lab</span></h1><div class="sub">V5.0 · six-month historical backtesting</div></div></div><span class="pill">● PAPER TESTING ONLY</span></header>
+<div class="notice"><b>EDUCATIONAL RESEARCH ONLY.</b> No wallet connection, order routing, buy/sell recommendations, or real-money trading. Backtests are historical simulations, not forecasts. Memecoin markets can be manipulated, illiquid, and subject to token/pool survivorship bias. This tool does not verify token safety or contract permissions.</div>
+
+<section class="card">
+ <div class="head"><div><h2>1. Select a historical market pool</h2><div class="sub">Search public indexed Solana pools or paste a pool address. Use a specific pool, not just a token ticker.</div></div><span class="tag">PUBLIC DATA</span></div>
+ <div class="formgrid three">
+  <div class="field"><label for="query">Token name / symbol / pool address</label><input id="query" value="BONK" placeholder="e.g. BONK or pool address"></div>
+  <div class="field"><label for="network">Network</label><select id="network"><option value="solana">Solana</option><option value="eth">Ethereum</option><option value="base">Base</option><option value="bsc">BNB Chain</option></select></div>
+  <button class="btn primary" id="search">Search pools</button>
+ </div>
+ <div id="poolResults" class="poollist"><div class="empty">Search for a token to choose a specific pool.</div></div>
+ <div class="formgrid" style="margin-top:12px">
+  <div class="field"><label for="poolAddress">Selected pool address</label><input id="poolAddress" placeholder="Paste pool address here"></div>
+  <button class="btn" id="load">Load 6 months of candles</button>
+ </div>
+ <div class="status" style="margin-top:10px"><span class="dot off" id="dot"></span><b id="status">Waiting for pool selection</b><span id="detail">Public API calls are rate-limited; avoid repeated rapid requests.</span></div>
+</section>
+
+<section class="grid" style="margin-top:12px">
+ <div class="card"><div class="label">Historical candles</div><div class="value" id="candles">—</div><div class="small muted" id="dateRange">No data loaded</div></div>
+ <div class="card"><div class="label">Best strategy net return</div><div class="value" id="bestReturn">—</div><div class="small muted" id="bestName">Run a backtest first</div></div>
+ <div class="card"><div class="label">Best strategy max drawdown</div><div class="value" id="bestDD">—</div><div class="small muted">Peak-to-trough decline</div></div>
+ <div class="card"><div class="label">Data source</div><div class="value" style="font-size:19px">GeckoTerminal</div><div class="small muted">Public on-chain DEX candles</div></div>
+</section>
+
+<section class="layout">
+ <div class="card"><div class="head"><div><h2>2. Backtest settings</h2><div class="sub">Signal on candle close, simulated entry on next candle open (reduces look-ahead bias).</div></div></div>
+ <div class="strategygrid">
+  <div class="strategy"><b>🎯 Sniper · breakout</b><p>Close breaks above prior 20-candle high with volume confirmation.</p><label><input type="checkbox" checked data-strat="Sniper"> Include in test</label></div>
+  <div class="strategy"><b>⚡ Momentum · trend</b><p>Positive 7-candle return while close is above 20-candle average.</p><label><input type="checkbox" checked data-strat="Momentum"> Include in test</label></div>
+  <div class="strategy"><b>〰 Dip Hunter · recovery</b><p>Price recovers above prior close after a deep pullback below its average.</p><label><input type="checkbox" checked data-strat="Dip Hunter"> Include in test</label></div>
+  <div class="strategy"><b>🐋 Whale Tail · volume anomaly</b><p>Unusually high volume plus a positive candle; volume alone is not proof of informed buying.</p><label><input type="checkbox" checked data-strat="Whale Tail"> Include in test</label></div>
+ </div>
+ <div class="formgrid three" style="margin-top:12px">
+  <div class="field"><label for="fee">Estimated fee per side (%)</label><input id="fee" type="number" min="0" max="5" step=".05" value="0.30"></div>
+  <div class="field"><label for="slip">Estimated slippage per side (%)</label><input id="slip" type="number" min="0" max="10" step=".05" value="0.20"></div>
+  <button class="btn primary" id="run" disabled>Run honest backtest</button>
+ </div>
+ <p class="small muted">Default round-trip cost is 1.0% (0.30% fee + 0.20% slippage on entry and exit). Actual costs vary by pool, size, route and network conditions. No gas/priority fee estimate is included.</p>
+ </div>
+ <div class="card"><div class="head"><div><h2>Methodology & limitations</h2><div class="sub">Transparent rules, not machine-learning predictions</div></div></div>
+ <p class="small">• One position at a time per strategy; no leverage or shorting.</p>
+ <p class="small">• Entry at next candle open; exit at next valid signal or after 10 candles.</p>
+ <p class="small">• No look-ahead: rolling indicators use candles available before the signal candle.</p>
+ <p class="small">• Net trade return deducts estimated entry and exit costs.</p>
+ <p class="small">• Daily candles can hide intraday volatility and stop-outs.</p>
+ <p class="small">• Results exclude failed transactions, taxes, MEV, pool migration, rug pulls and delisted pools.</p>
+ <p class="small">• A single pool is not representative of all markets for a token.</p>
+ </div>
+</section>
+
+<section class="layout">
+ <div class="card"><div class="head"><div><h2>3. Equity curves</h2><div class="sub">Indexed to 100; strategy returns compounded from closed paper trades</div></div><span class="tag">HISTORICAL TEST</span></div><canvas id="chart" class="chart"></canvas></div>
+ <div class="card"><div class="head"><div><h2>4. Strategy comparison</h2><div class="sub">Net of the selected assumed costs</div></div></div><div class="tablewrap"><table><thead><tr><th>Strategy</th><th>Trades</th><th>Win %</th><th>Net return</th><th>Max DD</th></tr></thead><tbody id="results"><tr><td colspan="5" class="muted">Load data and run the backtest.</td></tr></tbody></table></div></div>
+</section>
+<section class="card" style="margin-top:12px"><div class="head"><div><h2>5. Trade ledger</h2><div class="sub">Every simulated entry and exit, including costs</div></div><div class="actions"><button class="btn" id="csv" disabled>Export CSV</button><button class="btn" id="save" disabled>Save report</button></div></div><div class="tablewrap"><table><thead><tr><th>Strategy</th><th>Entry date</th><th>Exit date</th><th>Entry</th><th>Exit</th><th>Gross %</th><th>Costs %</th><th>Net %</th><th>Exit reason</th></tr></thead><tbody id="ledger"><tr><td colspan="9" class="muted">No trades yet.</td></tr></tbody></table></div></section>
+<section class="card" style="margin-top:12px"><div class="head"><div><h2>6. Saved reports</h2><div class="sub">Stored locally in this browser on this device only</div></div><button class="btn" id="clearReports">Clear saved reports</button></div><div id="reports"><div class="empty">No saved reports.</div></div></section>
+<div class="foot">GrokBot V5 · Paper research only · No wallet · No real orders · Historical results do not predict future results</div>
+</main><div class="toast" id="toast"></div>
+<script>
+(()=>{'use strict';
+const API='https://api.geckoterminal.com/api/v2',HEAD={'Accept':'application/json;version=20230302'};
+let candles=[],backtest=null,chosenPool=null,chosenNetwork='solana';
+const $=id=>document.getElementById(id),money=n=>(n<0?'−':'')+'$'+Math.abs(n).toFixed(2),pct=n=>(n>=0?'+':'')+n.toFixed(2)+'%';
+function toast(s){$('toast').textContent=s;$('toast').style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').style.display='none',2800)}
+function status(s,ok=true,detail=''){ $('status').textContent=s;$('dot').className='dot'+(ok?'':' off');$('detail').textContent=detail}
+async function getJSON(url){let r=await fetch(url,{headers:HEAD});if(!r.ok){let msg='HTTP '+r.status;if(r.status===429)msg+=' — public API rate limit; wait about a minute';throw Error(msg)}return r.json()}
+function poolAddress(item){let a=item.attributes||{};return a.address||String(item.id||'').split('_').slice(1).join('_')}
+function fmt(n){return n==null?'—':Number(n).toLocaleString(undefined,{maximumFractionDigits:2})}
+async function searchPools(){
+ const q=$('query').value.trim();chosenNetwork=$('network').value;if(!q){toast('Enter a token name, symbol or pool address');return}
+ $('search').disabled=true;$('poolResults').innerHTML='<div class="empty">Searching public pool index…</div>';status('Searching GeckoTerminal…',true);
+ try{
+  const url=API+'/search/pools?query='+encodeURIComponent(q)+'&network='+encodeURIComponent(chosenNetwork);
+  const j=await getJSON(url),items=j.data||[];
+  if(!items.length){$('poolResults').innerHTML='<div class="empty">No pools returned. Try a different query or paste a known pool address.</div>';status('No matching pools',false);return}
+  $('poolResults').innerHTML=items.slice(0,8).map((it,i)=>{const a=it.attributes||{},addr=poolAddress(it),name=a.name||a.pool_name||'Unnamed pool',liq=a.reserve_in_usd,vol=a.volume_usd&&a.volume_usd.h24;return `<div class="pool"><div><b>${name}</b><div class="sub">Liquidity: $${fmt(liq)} · 24h volume: $${fmt(vol)}</div><div class="sub">${addr}</div></div><button class="btn" data-pick="${i}">Select</button></div>`}).join('');
+  [...$('poolResults').querySelectorAll('[data-pick]')].forEach(btn=>btn.addEventListener('click',()=>{let it=items[Number(btn.dataset.pick)],addr=poolAddress(it);$('poolAddress').value=addr;chosenPool=addr;toast('Pool selected. Load its six-month candles.')}));status(items.length+' pool result(s) found',true,'Choose the exact pool; ticker symbols can be duplicated.');
+ }catch(e){$('poolResults').innerHTML='<div class="empty">'+e.message+'. The preview may block external requests; try opening the downloaded HTML in Chrome.</div>';status('Pool search failed',false,e.message)}
+ finally{$('search').disabled=false}
+}
+async function loadHistory(){
+ const addr=$('poolAddress').value.trim();chosenNetwork=$('network').value;if(!addr){toast('Search and select a pool, or paste its address');return}
+ $('load').disabled=true;$('run').disabled=true;status('Loading up to six months of daily candles…',true,'One public API request; daily data is used for a manageable first backtest.');
+ try{
+  const url=API+'/networks/'+encodeURIComponent(chosenNetwork)+'/pools/'+encodeURIComponent(addr)+'/ohlcv/day?aggregate=1&limit=1000&currency=usd';
+  const j=await getJSON(url),list=j.data?.attributes?.ohlcv_list||[];
+  if(!list.length)throw Error('No OHLCV candles returned for this pool.');
+  candles=list.map(x=>({t:Number(x[0]),o:Number(x[1]),h:Number(x[2]),l:Number(x[3]),c:Number(x[4]),v:Number(x[5])})).filter(x=>[x.t,x.o,x.h,x.l,x.c,x.v].every(Number.isFinite)).sort((a,b)=>a.t-b.t);
+  const cutoff=Date.now()/1000-183*86400;candles=candles.filter(x=>x.t>=cutoff);
+  if(candles.length<35)throw Error('Only '+candles.length+' daily candles available. Need at least 35 for the rolling indicators; this pool may be too new.');
+  const d1=new Date(candles[0].t*1000).toLocaleDateString(),d2=new Date(candles[candles.length-1].t*1000).toLocaleDateString();
+  $('candles').textContent=candles.length;$('dateRange').textContent=d1+' – '+d2+' · '+(candles.length/30.4).toFixed(1)+' months';
+  status('Historical data loaded',true,'OHLCV supplied by GeckoTerminal; candles are daily and may be incomplete for newer pools.');
+  $('run').disabled=false;toast('Loaded '+candles.length+' daily candles');
+ }catch(e){candles=[];$('candles').textContent='—';$('dateRange').textContent='No data loaded';status('Could not load history',false,e.message);toast(e.message)}
+ finally{$('load').disabled=false}
+}
+function avg(arr,end,n,key='c'){let s=0;for(let i=end-n+1;i<=end;i++)s+=arr[i][key];return s/n}
+function signal(name,i){
+ const c=candles[i],prev=candles[i-1];if(i<25)return false;
+ if(name==='Momentum')return c.c>avg(candles,i-1,20)&&c.c/candles[i-7].c-1>0.08;
+ if(name==='Sniper'){let high=-Infinity,vol=0;for(let k=i-20;k<i;k++){high=Math.max(high,candles[k].h);vol+=candles[k].v}return c.c>high&&c.v>vol/20*1.5}
+ if(name==='Dip Hunter'){let ma=avg(candles,i-1,20);return prev.c<ma*.92&&c.c>prev.c&&c.c<ma}
+ if(name==='Whale Tail'){let vols=[];for(let k=i-20;k<i;k++)vols.push(candles[k].v);let m=vols.reduce((a,b)=>a+b,0)/vols.length,sd=Math.sqrt(vols.reduce((a,b)=>a+(b-m)**2,0)/vols.length);return c.v>m+2*sd&&c.c>c.o}
+ return false
+}
+function backtestOne(name,fee,slip){
+ let cash=100,peak=100,maxDD=0,eq=[{t:candles[0].t,v:100}],trades=[],pos=null;
+ const cost=(fee+slip)/100;
+ for(let i=26;i<candles.length-1;i++){
+  const bar=candles[i],next=candles[i+1];
+  if(pos){
+   let reason='',exitPrice=next.o;
+   if(bar.c<=pos.stop){reason='Stop threshold touched (daily close proxy)';exitPrice=next.o}
+   else if(bar.c>=pos.target){reason='Target threshold touched (daily close proxy)';exitPrice=next.o}
+   else if(i-pos.entryIndex>=10){reason='10-candle time exit';exitPrice=next.o}
+   else if(signal(name,i)){reason='Strategy exit signal';exitPrice=next.o}
+   if(reason){
+    const gross=exitPrice/pos.entry-1,net=(1+gross)*(1-cost)**2-1;
+    cash*=1+net;trades.push({strategy:name,entryT:pos.entryT,exitT:next.t,entry:pos.entry,exit:exitPrice,gross:gross*100,costs:(1-(1-cost)**2)*100,net:net*100,reason});
+    pos=null;
+   }
+  }else if(signal(name,i)){
+   const entry=next.o;if(entry>0){pos={entry,entryT:next.t,entryIndex:i+1,stop:entry*.88,target:entry*1.25}}
+  }
+  peak=Math.max(peak,cash);maxDD=Math.max(maxDD,(peak-cash)/peak);eq.push({t:next.t,v:cash});
+ }
+ if(pos){let exit=candles[candles.length-1].c,gross=exit/pos.entry-1,net=(1+gross)*(1-cost)**2-1;cash*=1+net;trades.push({strategy:name,entryT:pos.entryT,exitT:candles[candles.length-1].t,entry:pos.entry,exit,gross:gross*100,costs:(1-(1-cost)**2)*100,net:net*100,reason:'End of available history'});peak=Math.max(peak,cash);maxDD=Math.max(maxDD,(peak-cash)/peak);eq.push({t:candles[candles.length-1].t,v:cash})}
+ const wins=trades.filter(t=>t.net>0).length;
+ return {name,trades,wins,winRate:trades.length?wins/trades.length*100:0,netReturn:(cash/100-1)*100,maxDD:maxDD*100,equity:eq,ending:cash}
+}
+function runBacktest(){
+ if(candles.length<35)return;const names=['Sniper','Momentum','Dip Hunter','Whale Tail'].filter(n=>document.querySelector('[data-strat="'+n+'"]').checked);if(!names.length){toast('Select at least one strategy');return}
+ const fee=Math.max(0,Math.min(5,Number($('fee').value)||0)),slip=Math.max(0,Math.min(10,Number($('slip').value)||0));
+ backtest=names.map(n=>backtestOne(n,fee,slip));renderResults();renderLedger();draw();$('csv').disabled=false;$('save').disabled=false;
+ const best=backtest.slice().sort((a,b)=>b.netReturn-a.netReturn)[0];$('bestReturn').textContent=pct(best.netReturn);$('bestReturn').className='value '+(best.netReturn>=0?'positive':'negative');$('bestName').textContent=best.name;$('bestDD').textContent=best.maxDD.toFixed(2)+'%';$('bestDD').className='value negative';
+ toast('Backtest complete. Historical results are not a forecast.')
+}
+function renderResults(){$('results').innerHTML=backtest.map(r=>`<tr><td><b>${r.name}</b></td><td>${r.trades.length}</td><td>${r.trades.length?r.winRate.toFixed(1)+'%':'—'}</td><td class="${r.netReturn>=0?'positive':'negative'}">${pct(r.netReturn)}</td><td class="negative">${r.maxDD.toFixed(2)}%</td></tr>`).join('')}
+function renderLedger(){let rows=backtest.flatMap(r=>r.trades).sort((a,b)=>a.entryT-b.entryT);$('ledger').innerHTML=rows.length?rows.map(t=>`<tr><td>${t.strategy}</td><td>${new Date(t.entryT*1000).toLocaleDateString()}</td><td>${new Date(t.exitT*1000).toLocaleDateString()}</td><td>$${t.entry.toPrecision(6)}</td><td>$${t.exit.toPrecision(6)}</td><td>${pct(t.gross)}</td><td>${t.costs.toFixed(2)}%</td><td class="${t.net>=0?'positive':'negative'}">${pct(t.net)}</td><td>${t.reason}</td></tr>`).join(''):'<tr><td colspan="9" class="muted">No entries triggered under these rules.</td></tr>'}
+function draw(){let c=$('chart'),ctx=c.getContext('2d'),w=c.clientWidth,h=c.clientHeight,d=devicePixelRatio||1;c.width=w*d;c.height=h*d;ctx.setTransform(d,0,0,d,0,0);ctx.strokeStyle='#29384c';for(let i=1;i<4;i++){ctx.beginPath();ctx.moveTo(0,i*h/4);ctx.lineTo(w,i*h/4);ctx.stroke()}if(!backtest)return;let vals=backtest.flatMap(r=>r.equity.map(e=>e.v)),lo=Math.min(100,...vals),hi=Math.max(100,...vals),span=Math.max(1,hi-lo),colors=['#8ca5ff','#42d5a3','#f3c66d','#ff8297'];backtest.forEach((r,j)=>{ctx.beginPath();r.equity.forEach((e,i)=>{let x=6+i*(w-12)/(r.equity.length-1),y=h-10-(e.v-lo)/span*(h-20);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.strokeStyle=colors[j%colors.length];ctx.lineWidth=2;ctx.stroke()})}
+function csv(){if(!backtest)return;let rows=[['strategy','entry_date','exit_date','entry_price','exit_price','gross_pct','costs_pct','net_pct','exit_reason']];backtest.forEach(r=>r.trades.forEach(t=>rows.push([t.strategy,new Date(t.entryT*1000).toISOString(),new Date(t.exitT*1000).toISOString(),t.entry,t.exit,t.gross,t.costs,t.net,t.reason])));let blob=new Blob([rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')).join('\n')],{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='grokbot-v5-trade-ledger.csv';a.click();URL.revokeObjectURL(a.href)}
+function saveReport(){if(!backtest)return;let reports=JSON.parse(localStorage.getItem('grokbotV5Reports')||'[]');let r={savedAt:new Date().toISOString(),network:chosenNetwork,pool:$('poolAddress').value,candles:candles.length,from:candles[0].t,to:candles[candles.length-1].t,fee:Number($('fee').value),slip:Number($('slip').value),results:backtest.map(x=>({name:x.name,trades:x.trades.length,wins:x.wins,winRate:x.winRate,netReturn:x.netReturn,maxDD:x.maxDD}))};reports.unshift(r);localStorage.setItem('grokbotV5Reports',JSON.stringify(reports.slice(0,30)));renderReports();toast('Report saved in this browser')}
+function renderReports(){let r=JSON.parse(localStorage.getItem('grokbotV5Reports')||'[]');$('reports').innerHTML=r.length?r.map(x=>`<div class="pool"><div><b>${new Date(x.savedAt).toLocaleString()} · ${x.network}</b><div class="sub">Pool ${x.pool} · ${x.candles} daily candles · ${new Date(x.from*1000).toLocaleDateString()}–${new Date(x.to*1000).toLocaleDateString()}</div><div class="sub">${x.results.map(y=>`${y.name}: ${pct(y.netReturn)} / DD ${y.maxDD.toFixed(1)}%`).join(' · ')}</div></div></div>`).join(''):'<div class="empty">No saved reports.</div>'}
+$('search').addEventListener('click',searchPools);$('load').addEventListener('click',loadHistory);$('run').addEventListener('click',runBacktest);$('csv').addEventListener('click',csv);$('save').addEventListener('click',saveReport);$('clearReports').addEventListener('click',()=>{if(confirm('Delete saved V5 reports from this browser?')){localStorage.removeItem('grokbotV5Reports');renderReports()}});window.addEventListener('resize',draw);renderReports();
+})();
+</script></body></html>
